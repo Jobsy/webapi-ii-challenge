@@ -44,5 +44,15 @@ server.post("/api/posts/:id/comments", (req, res) => {
         })
 })
 
+server.get("/api/posts", (req, res) => {
+    dB.find()
+    .then((posts) => {
+        res.status(200).json(posts)
+    })
+    .catch(() => {
+        res.status(500).json({ error: "The posts information could not be retrieved." })
+    })
+})
+
 const port = process.env.PORT || 7000;
 server.listen(port, () => console.log(`running on port ${port}`));
