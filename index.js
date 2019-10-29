@@ -9,18 +9,36 @@ server.get("/", (req, res) => {
 })
 
 server.post("/api/posts", (req, res) => {
-    const posts = req.body;
+    const post = req.body;
     const { title, content } = req.body;
     const { url } = req;
     if (!title || !content) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     }
-    dB.insert(posts)
+    dB.insert(post)
         .then(() => {
-            res.status(200).json({ postedContent: posts, url: url, operation: "POST" })
+            res.status(201).json({ postedContent: post, url: url, operation: "POST" })
         })
         .catch(() => {
             res.status(500).json({ error: "There was an error while saving the post to the database" })
+        })
+});
+
+server.post("/api/posts/:id/comments", (req, res) => {
+    const post = req.body;
+    const { url } = req;
+    const { id } = req.params;
+
+
+    dB.update(id, post)
+        .then((usersID) => {
+            if(usersID > 0){
+                res.status(201).json({ postedContent: post, url: url, operation: "POST" })
+            }
+            res.status(400).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(() => {
+            res.status(500).json({ error: "There was an error while saving the comment to the database" })
         })
 })
 
