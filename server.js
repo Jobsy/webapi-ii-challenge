@@ -4,7 +4,7 @@ const router = require("./data/posts-router");
 
 server.use(express.json());
 // const dB = require("./data/db");
-server.use(router);
+server.use("/api/posts", router);
 
 server.get("/", (req, res) => {
     res.send("hello world");

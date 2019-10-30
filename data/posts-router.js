@@ -4,7 +4,7 @@ const dB = require("./db");
 
 const router = express.Router();
 
-router.post("/api/posts", (req, res) => {
+router.post("/", (req, res) => {
     const post = req.body;
     const { title, contents } = req.body;
     const { url } = req;
@@ -20,7 +20,7 @@ router.post("/api/posts", (req, res) => {
         })
 });
 
-// router.post("/api/posts/:id/comments", (req, res) => {
+// router.post("/:id/comments", (req, res) => {
 //     const post = req.body;
 //     const { text } = req.body;
 //     const { url } = req;
@@ -40,7 +40,7 @@ router.post("/api/posts", (req, res) => {
 //         })
 // })
 
-router.get("/api/posts", (req, res) => {
+router.get("", (req, res) => {
     dB.find()
         .then((posts) => {
             res.status(200).json(posts)
@@ -50,7 +50,7 @@ router.get("/api/posts", (req, res) => {
         })
 })
 
-router.get("/api/posts/:id", (req, res) => {
+router.get("/:id", (req, res) => {
     const { id } = req.params;
 
     dB.findById(id)
@@ -66,7 +66,7 @@ router.get("/api/posts/:id", (req, res) => {
         })
 })
 
-router.get("/api/posts/:id/comments", (req, res) => {
+router.get("/:id/comments", (req, res) => {
     const { id } = req.params;
 
     dB.findCommentById(id)
@@ -81,7 +81,7 @@ router.get("/api/posts/:id/comments", (req, res) => {
             res.status(500).json({ error: "The post information could not be retrieved." })
         })
 })
-// router.get("/api/posts/:postid/comments", (req, res) => {
+// router.get("/:postid/comments", (req, res) => {
 //     const { id } = req.params;
 
 //     dB.findPostComments(id)
@@ -97,7 +97,7 @@ router.get("/api/posts/:id/comments", (req, res) => {
 //         })
 // })
 
-router.delete("/api/posts/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
     const { id } = req.params;
 
     dB.remove(id)
@@ -112,7 +112,7 @@ router.delete("/api/posts/:id", (req, res) => {
         })
 })
 
-router.put("/api/posts/:id", (req, res) => {
+router.put("/:id", (req, res) => {
     const post = req.body;
     const { title, contents } = req.body;
     const { url } = req;
