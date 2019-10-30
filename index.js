@@ -10,9 +10,9 @@ server.get("/", (req, res) => {
 
 server.post("/api/posts", (req, res) => {
     const post = req.body;
-    const { title, content } = req.body;
+    const { title, contents } = req.body;
     const { url } = req;
-    if (!title || !content) {
+    if (!title || !contents) {
         res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
     }
     dB.insert(post)
@@ -32,16 +32,16 @@ server.post("/api/posts/:id/comments", (req, res) => {
     if (!title) {
         res.status(400).json({ errorMessage: "Please provide text for the comment." })
     }
-    dB.update(id, post)
-        .then((usersID) => {
-            if (usersID > 0) {
-                res.status(201).json({ postedContent: post, url: url, operation: "POST" })
-            }
-            res.status(404).json({ message: "The post with the specified ID does not exist." })
-        })
-        .catch(() => {
-            res.status(500).json({ error: "There was an error while saving the comment to the database" })
-        })
+    // dB.update(id, post)
+    //     .then((usersID) => {
+    //         if (usersID > 0) {
+    //             res.status(201).json({ postedContent: post, url: url, operation: "POST" })
+    //         }
+    //         res.status(404).json({ message: "The post with the specified ID does not exist." })
+    //     })
+    //     .catch(() => {
+    //         res.status(500).json({ error: "There was an error while saving the comment to the database" })
+    //     })
 })
 
 server.get("/api/posts", (req, res) => {
@@ -73,7 +73,7 @@ server.get("/api/posts/:id", (req, res) => {
 server.get("/api/posts/:id/comments", (req, res) => {
     const { id } = req.params;
 
-    dB.findById(id)
+    dB.findCommentById(id)
         .then((posts) => {
 
             if (posts.length === 0) {
