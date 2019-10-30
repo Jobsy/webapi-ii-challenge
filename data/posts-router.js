@@ -1,7 +1,10 @@
+const express = require("express");
+
 const dB = require("./db");
 
+const router = express.Router();
 
-server.post("/api/posts", (req, res) => {
+router.post("/api/posts", (req, res) => {
     const post = req.body;
     const { title, contents } = req.body;
     const { url } = req;
@@ -17,7 +20,7 @@ server.post("/api/posts", (req, res) => {
         })
 });
 
-// server.post("/api/posts/:id/comments", (req, res) => {
+// router.post("/api/posts/:id/comments", (req, res) => {
 //     const post = req.body;
 //     const { text } = req.body;
 //     const { url } = req;
@@ -37,7 +40,7 @@ server.post("/api/posts", (req, res) => {
 //         })
 // })
 
-server.get("/api/posts", (req, res) => {
+router.get("/api/posts", (req, res) => {
     dB.find()
         .then((posts) => {
             res.status(200).json(posts)
@@ -47,7 +50,7 @@ server.get("/api/posts", (req, res) => {
         })
 })
 
-server.get("/api/posts/:id", (req, res) => {
+router.get("/api/posts/:id", (req, res) => {
     const { id } = req.params;
 
     dB.findById(id)
@@ -63,7 +66,7 @@ server.get("/api/posts/:id", (req, res) => {
         })
 })
 
-server.get("/api/posts/:id/comments", (req, res) => {
+router.get("/api/posts/:id/comments", (req, res) => {
     const { id } = req.params;
 
     dB.findCommentById(id)
@@ -78,7 +81,7 @@ server.get("/api/posts/:id/comments", (req, res) => {
             res.status(500).json({ error: "The post information could not be retrieved." })
         })
 })
-// server.get("/api/posts/:postid/comments", (req, res) => {
+// router.get("/api/posts/:postid/comments", (req, res) => {
 //     const { id } = req.params;
 
 //     dB.findPostComments(id)
@@ -94,7 +97,7 @@ server.get("/api/posts/:id/comments", (req, res) => {
 //         })
 // })
 
-server.delete("/api/posts/:id", (req, res) => {
+router.delete("/api/posts/:id", (req, res) => {
     const { id } = req.params;
 
     dB.remove(id)
@@ -109,7 +112,7 @@ server.delete("/api/posts/:id", (req, res) => {
         })
 })
 
-server.put("/api/posts/:id", (req, res) => {
+router.put("/api/posts/:id", (req, res) => {
     const post = req.body;
     const { title, contents } = req.body;
     const { url } = req;
@@ -129,3 +132,6 @@ server.put("/api/posts/:id", (req, res) => {
             res.status(500).json({ error: "The post information could not be modified." })
         })
 })
+
+
+module.exports = router;

@@ -1,8 +1,10 @@
 const express = require("express");
 const server = express();
+const router = require("./data/posts-router");
 
 server.use(express.json());
-const dB = require("./data/db");
+// const dB = require("./data/db");
+server.use(router);
 
 server.get("/", (req, res) => {
     res.send("hello world");
