@@ -87,19 +87,41 @@ server.get("/api/posts/:id/comments", (req, res) => {
 })
 
 server.delete("/api/posts/:id", (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     dB.remove(id)
-    .then((rmPost) => {
-        if(rmPost === 0) {
-            res.status(404).json({message: "The post with the specified ID does not exist."})
-        }
-        res.status(200).json({removedPost: `post with id: ${rmPost} deleted`})
-    })
-    .catch(() => {
-        res.status(500).json({ error: "The post could not be removed" })
-    })
+        .then((rmPost) => {
+            if (rmPost === 0) {
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+            }
+            res.status(200).json({ removedPost: `post with id: ${rmPost} deleted` })
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The post could not be removed" })
+        })
 })
+
+server.put("/api/posts/:id", (req, res) => {
+    const post = req.body;
+    const { title, contents } = req.body;
+    const { url } = req;
+    const { id } = req.params;
+
+    if (!title || !contents) {
+        res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
+    }
+    dB.update(id, post)
+        .then((usersID) => {
+            if (usersID) {
+                res.status(200).json({ updatedContent: post, url: url, operation: "POST" })
+            }
+            res.status(404).json({ message: "The post with the specified ID does not exist." })
+        })
+        .catch(() => {
+            res.status(500).json({ error: "The post information could not be modified." })
+        })
+})
+
 
 const port = process.env.PORT || 7000;
 server.listen(port, () => console.log(`running on port ${port}`));
